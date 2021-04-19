@@ -1,0 +1,25 @@
+<div>
+<section class="pt-5 pb-5 mt-0 align-items-center d-flex bg-secondary text-white" style="height:50vh;"> 
+<div class="container-fluid">
+	<%= form_with(url: posts_create_path, method: "post") do |form| %>
+
+<form>
+<div class="row  justify-content-center align-items-center d-flex text-center ">
+<div class="col">
+	<h5>Please Enter Data</h5>
+</div>
+    <div class="col">
+<%= form.text_field :post,class:"form-control",placeholder:"post" %>
+</div>
+<div class="col">
+<%=form.submit "submit",class:"btn btn-success" %>
+	
+</div>
+</div>
+
+<%end%>
+</div>
+</form>
+</div>
+</section>
+</div>

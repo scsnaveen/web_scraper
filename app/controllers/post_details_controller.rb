@@ -1,0 +1,2 @@
+class PostDetailsController < ApplicationController
+end
