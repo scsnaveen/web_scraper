@@ -1,4 +1,5 @@
 require Rails.root.join('lib', 'rails_admin' , 'bulk_update.rb')
+require Rails.root.join('lib', 'rails_admin' , 'managing_roles.rb')
 
 RailsAdmin.config do |config|
 
@@ -40,7 +41,11 @@ RailsAdmin.config do |config|
      end
   # config.included_models = ['User','Post']
 
-
+    managing_roles do 
+      visible do 
+        bindings[:abstract_model].model.to_s == "Post"
+      end
+    end
 
     ## With an audit adapter, you can add:
     # history_index

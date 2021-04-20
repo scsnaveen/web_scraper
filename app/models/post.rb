@@ -1,18 +1,19 @@
 class Post < ApplicationRecord
-	@name = 'vehicles_spider'
-  @engine = :mechanize
+	# has_one :post_detail
+	include AdminCurrent
+		scope :id, -> {where("id <=?",RolePermit.where("role_base=?",AdminCurrent.admin_current.role).first.role_limit) } 
 
-  def self.process(url)
-    @start_urls = [url]
-    puts @start_urls.inspect
-    
-  end
-
-  def parse(response, url:, data: {})
-    response.xpath("//div[@class='main']").each do |vehicle|
-      item = {}
-
-      puts item.inspect
-    end
-  end
+		RailsAdmin.config do |config|
+  			config.model Post do
+				list do
+					scopes [:id] 
+				end
+				
+			end
+		end
+		# rails_admin do
+		# 	edit do
+		# 		scopes [:id] 
+		# 	end
+		# end
 end

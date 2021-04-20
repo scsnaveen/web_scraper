@@ -1,0 +1,17 @@
+<div class="container">
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>post</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%@posts.order("id ASC").each do |post|%>
+		<tr>
+			<td><%= post.id%></td>
+			<td><%= post.post%></td>
+		</tr>
+		<%end%>
+	</tbody>
+</table>

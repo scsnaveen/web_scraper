@@ -1,8 +1,11 @@
 require 'kimurai'
-
 class PostData < Kimurai::Base
   @name = 'post_data'
   @engine = :mechanize
+  @config = {
+    user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36",
+    # before_request: { delay: 4..7 }
+  }
 
   def self.process(url)
     @start_urls = [url]
@@ -11,26 +14,24 @@ class PostData < Kimurai::Base
 
   def parse(response, url:, data: {})
     puts "******************"
-    puts response.xpath("//body//div[@id= 'GyAeWb']").inspect
-    response.xpath("//body").each do |vehicle|
-      puts vehicle.inspect
-      # puts "+++++++++++"
-      # puts vehicle.inspect
-      # puts "***********@@@@@@@@"
-      val = vehicle.children[2].children[0].children.children.children.children.children[0].attributes
-      puts val.inspect
-      puts "+++++++++++"
-      item = {}
- puts "----------------------"
-      # item[:title]      = vehicle.html('yuRUbf')
-      puts "title name"
-      puts item[:title].inspect
-      puts "---------------------"
-      # item[:price]      = vehicle.css('span.listing-row__price')&.text&.squish&.delete('^0-9').to_i
-      # item[:drivetrain]   = vehicle.css('ul.listing-row__meta li')[3]&.text&.squish.gsub('Drivetrain: ', '')
-      puts item.inspect
+    @post_detail = PostDetail.new
+    @post_detail.post_id = Post.last.id
+      @post_detail.title =[]
+    response.xpath("//h3[@class= 'LC20lb DKV0Md']").each do |a|
+      # puts a.children[0].text.inspect
+      # val = vehicle.children[2].children[0].children.children.children.children.children[0].
 
-      Post.where(item).first_or_create
+      # puts "----------------------"
+      @post_detail.title << a.children[0].text
+      # puts item[:title].inspect
+      # puts "---------------------"
+      # Post.where(item).first_or_create
     end
+    response.xpath("//cite[@class= 'iUh30 Zu0yb qLRx3b tjvcx']").each do |a|
+      # puts a.children[0].text.inspect
+     @post_detail.link_value << a.children[0].text
+    end
+    @post_detail.save
+
   end
 end

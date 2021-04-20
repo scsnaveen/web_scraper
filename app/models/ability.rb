@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Ability
+        include AdminCurrent
   include CanCan::Ability
 
   def initialize(admin)
@@ -10,15 +11,14 @@ class Ability
     if admin.role =="Super Admin"
         can :manage, :all
       elsif admin.role == "Admin"
+        @role=RolePermit.where("role_base=?",AdminCurrent.admin_current.role).first.role_limit
         can :access, :rails_admin
         can :dashboard ,:all
-        can :read, :all
-        can :create,:all
+        can :read, :dashboard
         can :update,:all
         can :bulk_update,:all
-        can :read, Post, ["user_id = ?", user.id] do |project|
-    project.present?
-end
+        can :read,[User,Post]
+        can :update,Post if id <= @role
       else
         can :access, :rails_admin
         can :dashboard ,:all
