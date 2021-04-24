@@ -1,5 +1,16 @@
 # frozen_string_literal: true
+require 'rails_admin/main_controller'
 
+module RailsAdmin
+
+    class MainController < RailsAdmin::ApplicationController
+        # rescue for the admins who cannot access  
+        rescue_from CanCan::AccessDenied do |exception|
+            redirect_to rails_admin.dashboard_path
+            flash[:alert] = 'Access denied.'
+        end
+    end
+end
 class Ability
         include AdminCurrent
   include CanCan::Ability
@@ -15,10 +26,12 @@ class Ability
         can :access, :rails_admin
         can :dashboard ,:all
         can :read, :dashboard
-        can :update,:all
+        # can :update,:all
         can :bulk_update,:all
-        can :read,[User,Post]
-        can :update,Post if id <= @role
+        # can :read,[User,Post]
+        can [:update,:read],Post,["id<=?",@role.to_i] do |post|
+          post.id <= @role.to_i
+        end
       else
         can :access, :rails_admin
         can :dashboard ,:all

@@ -13,6 +13,8 @@ RailsAdmin.config do |config|
 
   ## == CancanCan ==
   config.authorize_with :cancancan
+  config.parent_controller = 'ApplicationController' 
+
 
   ## == Pundit ==
   # config.authorize_with :pundit
@@ -37,7 +39,7 @@ RailsAdmin.config do |config|
     delete
     show_in_app
      bulk_update do
-      except ['Admin']
+      only ['Post']
      end
   # config.included_models = ['User','Post']
 

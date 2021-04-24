@@ -13,22 +13,14 @@ class PostData < Kimurai::Base
   end
 
   def parse(response, url:, data: {})
-    puts "******************"
     @post_detail = PostDetail.new
     @post_detail.post_id = Post.last.id
       @post_detail.title =[]
     response.xpath("//h3[@class= 'LC20lb DKV0Md']").each do |a|
-      # puts a.children[0].text.inspect
-      # val = vehicle.children[2].children[0].children.children.children.children.children[0].
 
-      # puts "----------------------"
       @post_detail.title << a.children[0].text
-      # puts item[:title].inspect
-      # puts "---------------------"
-      # Post.where(item).first_or_create
     end
     response.xpath("//cite[@class= 'iUh30 Zu0yb qLRx3b tjvcx']").each do |a|
-      # puts a.children[0].text.inspect
      @post_detail.link_value << a.children[0].text
     end
     @post_detail.save
