@@ -9,9 +9,7 @@ Rails.application.routes.draw do
   root 'welcome#index'
   get 'posts/new'
   post 'posts/create'
-  resources :posts,only: [:scrape] do
-    match '/scrape', to: 'posts#scrape', via: :post, on: :collection
-  end
+  
   devise_scope :admin do
 		get 'admins/sign_out', to: 'admins/sessions#destroy'
 	end
